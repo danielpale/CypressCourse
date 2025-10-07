@@ -22,7 +22,7 @@ describe("contact form", () => {
     cy.get("@submitBtn").should("have.attr", "disabled");
   });
 
-  it("should validte the form input", () => {
+  it("should validate the form input", () => {
     cy.visit("http://localhost:5173/about");
 
     cy.get('[data-cy="contact-btn-submit').click();
@@ -30,5 +30,30 @@ describe("contact form", () => {
       expect(el).to.not.have.attr("disabled");
       expect(el.text()).to.not.equal("Sending...");
     });
+
+    cy.get('[data-cy="contact-input-message"]').as("msgInput");
+    cy.get("@msgInput").focus().blur();
+    cy.get("@msgInput")
+      .parent()
+      .should("have.attr", "class")
+      .and("match", /invalid/);
+    // Funciona bien en Cypress Open pero no con Cypress Run
+    // .then((el) => {
+    //   expect(el.attr("class")).to.contains("invalid");
+    // });
+
+    cy.get('[data-cy="contact-input-name"]').as("nameInput");
+    cy.get("@nameInput").focus().blur();
+    cy.get("@nameInput")
+      .parent()
+      .should("have.attr", "class")
+      .and("match", /invalid/);
+
+    cy.get('[data-cy="contact-input-email"]').as("emailInput");
+    cy.get("@emailInput").focus().blur();
+    cy.get("@emailInput")
+      .parent()
+      .should("have.attr", "class")
+      .and("match", /invalid/);
   });
 });
